@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Magiczna Średnia</title>
+  <!-- Favicon emoji 6️⃣ -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>6️⃣</text></svg>">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #4d433d; /* tło strony */
+      color: #eee;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #ffffff; /* neon biały */
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 0 0 8px #ffffff;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #292522; /* kontener taki sam jak tło */
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #ffffff; /* neon biały */
+      text-align: center;
+    }
+
+    .grade-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    .grade-row span {
+      font-size: 1.2em;
+      color: #ffffff; /* neon biały */
+      font-weight: bold;
+      text-shadow: 0 0 6px #ffffff;
+    }
+
+    input[type="number"] {
+      width: 60px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #555;
+      background: #1e1e2f; /* ciemne pola dla kontrastu */
+      color: #eee;
+      font-size: 16px;
+      text-align: center;
+      transition: 0.2s;
+    }
+
+    input[type="number"]:focus {
+      border-color: #ffffff;
+      box-shadow: 0 0 8px #ffffff;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #b57010; /* ciemny tekst na białym tle */
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      box-shadow: 0 0 8px #ffffff;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #eeeeee;
+      box-shadow: 0 0 15px #ffffff;
+      transform: scale(1.03);
+    }
+
+    #result {
+      margin-top: 25px;
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 0 6px #ffffff;
+    }
+
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #eee;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1> 6️⃣ Oblicz Średnią</h1>
+
+  <div class="container">
+    <form id="grades-form">
+      <div class="grade-row">
+        <span>6️⃣</span>
+        <input type="number" name="6" min="0" value="0">
+      </div>
+      <div class="grade-row">
+        <span>5️⃣</span>
+        <input type="number" name="5" min="0" value="0">
+      </div>
+      <div class="grade-row">
+        <span>4️⃣</span>
+        <input type="number" name="4" min="0" value="0">
+      </div>
+      <div class="grade-row">
+        <span>3️⃣</span>
+        <input type="number" name="3" min="0" value="0">
+      </div>
+      <div class="grade-row">
+        <span>2️⃣</span>
+        <input type="number" name="2" min="0" value="0">
+      </div>
+      <div class="grade-row">
+        <span>1️⃣</span>
+        <input type="number" name="1" min="0" value="0">
+      </div>
+      <button type="submit">Oblicz 🔮</button>
+    </form>
+    <div id="result"></div>
+  </div>
+
+  <footer>Kupczak Gaming ©</footer>
+
+  <script>
+    const form = document.getElementById('grades-form');
+    const resultEl = document.getElementById('result');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = {};
+      formData.forEach((value, key) => { data[key] = value });
+
+      const response = await fetch("/calculate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      const json = await response.json();
+      resultEl.textContent = json.result;
+    });
+  </script>
+</body>
+</html>
